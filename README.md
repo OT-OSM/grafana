@@ -11,7 +11,7 @@ The basic requirments are:-
 - 3000 port should be open in your server
 
 ## Role Variables
-The role variables are defined in the [vars](). So there is not so many variables you just have to pass the datasource name and datasource url in the variable.
+The role variables are defined in the [vars](https://gitlab.com/oosm/osm_grafana/tree/master/vars). So there is not so many variables you just have to pass the datasource name and datasource url in the variable.
 
 ```yaml
 # vars file for grafana
@@ -44,11 +44,14 @@ Here We are using root as an user but you can use different user, For that you j
   roles:
     -  grafana
 ```
-
+You can simply use this role by using this command
+```shell
+ansible-playbook -i hosts site.yml
+```
 ## License
 
 BSD
 
 ## Author Information
 
-This role is written and maintained by [Abhishek Dubey](). If you have any queries and sugesstion, please feel free to reach.
+This role is written and maintained by [Abhishek Dubey](https://gitlab.com/abhishek-dubey). If you have any queries and sugesstion, please feel free to reach.
