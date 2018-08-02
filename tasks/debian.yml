@@ -50,3 +50,4 @@
     group: grafana
   notify:
     - start_grafana
+
