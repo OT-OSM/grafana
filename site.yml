@@ -1,0 +1,5 @@
+---
+- hosts: grafana
+  user: {{ user }}
+  roles:
+    -  grafana

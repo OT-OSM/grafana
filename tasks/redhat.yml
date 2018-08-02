@@ -1,0 +1,55 @@
+---
+- name: Updating the repo and cache
+  yum:
+    name: '*'
+    state: latest
+
+- name: Download and Install Grafana Package on RedHat
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - libselinux-python
+    - https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-{{ grafana_version }}-1.x86_64.rpm
+
+- name: Move the configuration File of Grafana
+  copy:
+    src: grafana.ini
+    dest: /etc/grafana/grafana.ini
+
+- name: Create grafana Dashboard directory
+  file:
+    path: /var/lib/grafana/dashboards
+    state: directory
+    owner: grafana
+    group: grafana
+    mode: 0755
+
+- name: Add Dashboard to grafana
+  copy:
+    src: "{{ item }}"
+    dest: /var/lib/grafana/dashboards/
+    owner: grafana
+    group: grafana
+  with_items:
+    - mongodb.json
+    - mysql.json
+    - node-exporter.json
+    - prometheus-redis.json
+    - apache.json
+
+- name: Adding Conf to enable dashboards
+  copy:
+    src: all.yml
+    dest: /etc/grafana/provisioning/dashboards/
+    owner: grafana
+    group: grafana
+
+- name: Adding Datasource to Prometheus
+  template:
+    src: all.yml.j2
+    dest: /etc/grafana/provisioning/datasources/all.yml
+    owner: grafana
+    group: grafana
+  notify:
+    - start_grafana
