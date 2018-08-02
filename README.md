@@ -48,6 +48,34 @@ You can simply use this role by using this command
 ```shell
 ansible-playbook -i hosts site.yml
 ```
+
+## Directory Structure of Role
+This is the directory structure of role:-
+```shell
+osm_grafana/
+├── defaults
+│   └── main.yml
+├── files
+│   ├── all.yml
+│   ├── apache.json
+│   ├── elasticsearch.json
+│   ├── grafana.ini
+│   ├── mongodb.json
+│   ├── mysql.json
+│   ├── node-exporter.json
+│   └── prometheus-redis.json
+├── handlers
+│   └── main.yml
+├── hosts
+├── README.md
+├── site.yml
+├── tasks
+│   ├── debian.yml
+│   ├── main.yml
+│   └── redhat.yml
+└── templates
+    └── all.yml.j2
+```
 ## License
 
 BSD
