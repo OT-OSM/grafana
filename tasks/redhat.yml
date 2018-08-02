@@ -1,9 +1,4 @@
 ---
-- name: Updating the repo and cache
-  yum:
-    name: '*'
-    state: latest
-
 - name: Download and Install Grafana Package on RedHat
   yum:
     name: "{{ item }}"
