@@ -11,12 +11,12 @@ The basic requirments are:-
 - 3000 port should be open in your server
 
 ## Role Variables
-The role variables are defined in the [defaults](https://gitlab.com/oosm/osm_grafana/tree/master/defaults). So there is not so many variables you just have to pass the datasource name and datasource url in the variable.
+
+The role variables are defined in the [defaults](https://gitlab.com/oosm/osm_grafana/tree/master/defaults). So there is not so many variables you just have to pass the grafana version as variable.
 
 ```yaml
 # vars file for grafana
-datasource_name: "prometheus.internal-odmont.com"
-datasource_url: "http://prometheus:9090"
+grafana_version: "5.2.2"
 ```
 You can define any type of url but for datasource name i would recommend you to go with default because the dashboards we have used is custom dashboard and there are configured for this datasource_name. Otherwise you have to add your datasource because this will not pick up the value.
 
@@ -24,8 +24,7 @@ Here is the list of variables and there description:-
 
 |**Variables** | **Description** |
 |--------------|-----------------|
-|datasource_name | Name of datasource which you want to add in grafana |
-|datasource_url | Url of your datasource which you want to add in grafana |
+|grafana_version | Version of grafana that you want to install |
 
 ## Dependencies
 
@@ -70,20 +69,15 @@ ansible-playbook -i hosts site.yml
 This is the directory structure of role:-
 ```shell
 osm_grafana
+├── dashboards
+│   ├── apache_exporter.json
+│   ├── mongodb_exporter.json
+│   ├── mysql_exporter.json
+│   └── node_exporter.json
 ├── defaults
 │   └── main.yml
-├── files
-│   ├── all.yml
-│   ├── apache.json
-│   ├── elasticsearch.json
-│   ├── grafana.ini
-│   ├── mongodb.json
-│   ├── mysql.json
-│   ├── node-exporter.json
-│   └── prometheus-redis.json
 ├── handlers
 │   └── main.yml
-├── hosts
 ├── README.md
 ├── site.yml
 ├── tasks
@@ -91,8 +85,15 @@ osm_grafana
 │   ├── main.yml
 │   └── redhat.yml
 └── templates
-    └── all.yml.j2
+    └── grafana.ini.j2
 ```
+
+## Dashboard Usage
+
+If you want to use dashboards there is a [dashboards](https://gitlab.com/oosm/osm_grafana/tree/master/dashboards) directory that have some generic dashboards that you can use.
+
+For using dashboard just paste the content of dashboard while importing dashboard in grafana.
+
 ## License
 
 BSD

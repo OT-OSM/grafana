@@ -9,8 +9,8 @@
     deb: https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana_{{ grafana_version }}_amd64.deb 
 
 - name: Move the configuration File of Grafana
-  copy:
-    src: grafana.ini
+  template:
+    src: grafana.ini.j2
     dest: /etc/grafana/grafana.ini
 
 - name: Create grafana Dashboard directory
@@ -20,34 +20,5 @@
     owner: grafana
     group: grafana
     mode: 0755
-
-- name: Add Dashboard to grafana
-  copy:
-    src: "{{ item }}"
-    dest: /var/lib/grafana/dashboards/
-    owner: grafana
-    group: grafana
-  with_items:
-    - mongodb.json
-    - mysql.json
-    - node-exporter.json
-    - prometheus-redis.json
-    - apache.json
-    - elasticsearch.json
-
-- name: Adding Conf to enable dashboards
-  copy:
-    src: all.yml
-    dest: /etc/grafana/provisioning/dashboards/
-    owner: grafana
-    group: grafana
-
-- name: Adding Datasource to Prometheus
-  template:
-    src: all.yml.j2
-    dest: /etc/grafana/provisioning/datasources/all.yml
-    owner: grafana
-    group: grafana
   notify:
     - start_grafana
-

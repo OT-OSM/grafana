@@ -1,6 +1,7 @@
 ---
 - hosts: grafana
-  user: root
+  user: 
+  become: true
   roles:
-    -  grafana
+    - osm_grafana
 
