@@ -39,7 +39,6 @@ Here is an example for the main playbook
 ```yaml
 ---
 - hosts: grafana
-  user: root
   roles:
     - osm_grafana
 ```
@@ -48,7 +47,6 @@ Here We are using root as an user but you can use different user, For that you j
 ```yaml
 ---
 - hosts: grafana
-  user: test_user
   become: true
   roles:
     - osm_grafana
