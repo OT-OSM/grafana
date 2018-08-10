@@ -1,0 +1,24 @@
+---
+- name: Updating the repo and cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Download and Install Grafana Package on Debian
+  apt:
+    deb: https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana_{{ grafana_version }}_amd64.deb 
+
+- name: Move the configuration File of Grafana
+  template:
+    src: grafana.ini.j2
+    dest: /etc/grafana/grafana.ini
+
+- name: Create grafana Dashboard directory
+  file:
+    path: /var/lib/grafana/dashboards
+    state: directory
+    owner: grafana
+    group: grafana
+    mode: 0755
+  notify:
+    - start_grafana
