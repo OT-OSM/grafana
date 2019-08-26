@@ -3,4 +3,3 @@
 datasource_name: "prometheus.internal-odmont.com"
 datasource_url: "http://prometheus:9090"
 grafana_version: "5.2.2"
-
