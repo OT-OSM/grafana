@@ -5,7 +5,7 @@
     state: present
   with_items:
     - libselinux-python
-    - https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-{{ grafana_version }}-1.x86_64.rpm
+    - "{{ rpm_url }}"
 
 - name: Move the configuration File of Grafana
   template:
