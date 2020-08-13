@@ -6,7 +6,7 @@
 
 - name: Download and Install Grafana Package on Debian
   apt:
-    deb: "{{ grafana_url }}"
+    deb: "{{ deb_url }}"
 
 - name: Move the configuration File of Grafana
   template:
