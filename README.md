@@ -2,6 +2,8 @@
 
 Grafana is an opensource tool for metrics visualization of some services like elasticsearch, prometheus, cloudwatch and many others. This role is written for prometheus as a datasource.
 
+## This role is compatible with [Linux Hardened](https://github.com/OT-OSM/linux_armour) OS
+
 ## Requirements
 
 There is no particular requirment for running this role. As this role is platform independent for centos 6 or 7 and ubuntu 14 or 16. The only dependency for centos 6 is libselinux python and we have included that as well.
