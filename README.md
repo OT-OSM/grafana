@@ -2,7 +2,7 @@
 
 Grafana is an opensource tool for metrics visualization of some services like elasticsearch, prometheus, cloudwatch and many others. This role is written for prometheus as a datasource.
 
-## This role is compatible with [Linux Hardened](https://github.com/OT-OSM/linux_armour) OS
+### This role is compatible with [Linux Hardened](https://github.com/OT-OSM/linux_armour) OS
 
 ## Requirements
 
