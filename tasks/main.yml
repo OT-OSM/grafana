@@ -1,11 +1,104 @@
 ---
-# tasks file for grafana
-- name: Install Grafana on Debian
-  include: debian.yml
-  when:
-    ansible_os_family == "Debian"
+- name: Install prerequisite packages
+  apt:
+    name:
+      - apt-transport-https
+      - software-properties-common
+      - wget
+      - gnupg
+    state: present
+    update_cache: yes
 
-- name: Install Grafana on RedHat
-  include: redhat.yml
-  when:
-    ansible_os_family == "RedHat"
+- name: Add Grafana GPG key
+  apt_key:
+    url: https://apt.grafana.com/gpg.key
+    state: present
+
+- name: Add Grafana OSS repository
+  apt_repository:
+    repo: "deb https://apt.grafana.com stable main"
+    state: present
+
+- name: Install Grafana package
+  apt:
+    name: grafana
+    state: present
+    update_cache: yes
+
+- name: Enable and Start Grafana service
+  systemd:
+    name: grafana-server
+    enabled: yes
+    state: started
+
+- name: Ensure provisioning directory exists
+  file:
+    path: /etc/grafana/provisioning/datasources
+    state: directory
+    owner: root
+    group: grafana
+    mode: '0755'
+
+- name: Provision Loki and Tempo datasources
+  template:
+    src: datasources.yaml.j2
+    dest: /etc/grafana/provisioning/datasources/ansible_managed.yaml
+    owner: root
+    group: grafana
+    mode: '0640'
+  notify: Restart Grafana
+
+- name: Ensure dashboard provider directory exists
+  file:
+    path: /etc/grafana/provisioning/dashboards
+    state: directory
+
+- name: Configure dashboard provider
+  copy:
+    dest: /etc/grafana/provisioning/dashboards/nodes.yaml
+    content: |
+      apiVersion: 1
+      providers:
+        - name: 'Standard Dashboards'
+          orgId: 1
+          folder: 'System'
+          type: file
+          options:
+            path: /var/lib/grafana/dashboards
+
+- name: Create local dashboard storage
+  file:
+    path: /var/lib/grafana/dashboards
+    state: directory
+    owner: grafana
+
+- name: Download Node Exporter Dashboard JSON
+  get_url:
+    url: https://grafana.com/api/dashboards/1860/revisions/37/download
+    dest: /var/lib/grafana/dashboards/node-exporter.json
+    owner: grafana
+
+- name: Create directory for dashboard JSONs
+  file:
+    path: /var/lib/grafana/dashboards
+    state: directory
+    owner: grafana
+    group: grafana
+    mode: '0755'
+
+- name: Copy hardcoded Dashboard JSON
+  copy:
+    src: node-exporter-dashboard.json
+    dest: /var/lib/grafana/dashboards/node-exporter.json
+    owner: grafana
+    group: grafana
+    mode: '0644'
+
+- name: Deploy Dashboard Provider configuration
+  template:
+    src: dashboard-provider.yaml.j2
+    dest: /etc/grafana/provisioning/dashboards/ansible-managed.yaml
+    owner: root
+    group: grafana
+    mode: '0640'
+  notify: Restart Grafana
