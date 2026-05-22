@@ -1,7 +1,5 @@
 ---
-# handlers file for grafana
-- name: start_grafana
-  service:
+- name: Restart Grafana
+  systemd:
     name: grafana-server
     state: restarted
-    enabled: true

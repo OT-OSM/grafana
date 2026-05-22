@@ -1,0 +1,25 @@
+apiVersion: 1
+
+datasources:
+  - name: Loki
+    type: loki
+    access: proxy
+    url: http://localhost:3100
+    isDefault: true
+    jsonData:
+      maxLines: 1000
+
+  - name: Tempo
+    type: tempo
+    access: proxy
+    url: http://localhost:3200
+    jsonData:
+      httpMethod: GET
+      serviceMap:
+        datasourceUid: 'prometheus'
+
+  - name: VictoriaMetrics
+    type: prometheus
+    url: http://localhost:8428
+    access: proxy
+    isDefault: false 
